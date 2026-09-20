@@ -1,0 +1,1628 @@
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAN SHOP</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#0b1020;
+    color:#fff;
+    font-family:Arial,sans-serif;
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.topbar{
+    height:65px;
+    background:#11182d;
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    gap:15px;
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    color:#a78bfa;
+    flex:1;
+}
+
+.menuBtn{
+    background:none;
+    border:0;
+    color:white;
+    font-size:28px;
+}
+
+.balance{
+    background:#151d35;
+    padding:9px 14px;
+    border-radius:10px;
+}
+
+.side{
+    position:fixed;
+    top:0;
+    left:-290px;
+    width:280px;
+    height:100vh;
+    background:#11182d;
+    z-index:100;
+    padding:20px;
+    transition:.25s;
+    box-shadow:5px 0 20px #0008;
+}
+
+.side.open{
+    left:0;
+}
+
+.side h2{
+    color:#a78bfa;
+}
+
+.side button{
+    width:100%;
+    padding:13px;
+    margin:5px 0;
+    border:0;
+    border-radius:8px;
+    background:#151d35;
+    color:#fff;
+    text-align:left;
+}
+
+.side button:hover{
+    background:#7c3aed;
+}
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#0008;
+    z-index:90;
+}
+
+.overlay.show{
+    display:block;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.hero{
+    background:linear-gradient(135deg,#171f45,#5b21b6);
+    padding:35px;
+    border-radius:18px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    margin-top:0;
+}
+
+.search{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.search input{
+    flex:1;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #293452;
+    border-radius:9px;
+    background:#0f162b;
+    color:white;
+    outline:none;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:#151d35;
+    border:1px solid #222d4c;
+    border-radius:15px;
+    padding:18px;
+}
+
+.card h3{
+    margin-top:0;
+}
+
+.price{
+    color:#c4b5fd;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.btn{
+    padding:11px 15px;
+    border:0;
+    border-radius:8px;
+    background:#7c3aed;
+    color:white;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#6d28d9;
+}
+
+.btn.red{
+    background:#dc2626;
+}
+
+.btn.green{
+    background:#16a34a;
+}
+
+.btn.gray{
+    background:#374151;
+}
+
+.actions{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.actions .btn{
+    flex:1;
+}
+
+.box{
+    background:#151d35;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-full{
+    grid-column:1/-1;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #293452;
+    text-align:left;
+}
+
+.auth{
+    max-width:430px;
+    margin:60px auto;
+}
+
+.tabs{
+    display:flex;
+    gap:5px;
+    margin-bottom:15px;
+}
+
+.tabs button{
+    flex:1;
+    padding:12px;
+    border:0;
+    border-radius:8px;
+    background:#0f162b;
+    color:#fff;
+}
+
+.tabs button.active{
+    background:#7c3aed;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.notice{
+    padding:12px;
+    border-radius:8px;
+    background:#172554;
+    margin:10px 0;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#9ca3af;
+}
+
+.admin-title{
+    color:#c4b5fd;
+}
+
+@media(max-width:650px){
+    .container{
+        padding:15px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-full{
+        grid-column:auto;
+    }
+
+    .balance{
+        font-size:12px;
+    }
+
+    .logo{
+        font-size:18px;
+    }
+
+    .hero{
+        padding:22px;
+    }
+
+    table{
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="side" id="side">
+    <h2>☰ TAN SHOP</h2>
+
+    <div id="userMenu">
+        <button onclick="go('home')">🏠 Shop</button>
+        <button onclick="filterGame('Liên Quân')">⚔️ Liên Quân</button>
+        <button onclick="filterGame('Roblox')">🎮 Roblox</button>
+        <button onclick="go('orders')">📜 Lịch sử mua</button>
+    </div>
+
+    <div id="adminMenu" class="hidden">
+        <button onclick="go('admin')">⚙️ Quản trị</button>
+    </div>
+
+    <button onclick="logout()">🚪 Đăng xuất</button>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <button class="menuBtn" onclick="openMenu()">☰</button>
+    <div class="logo">TAN SHOP</div>
+    <div class="balance" id="balanceBox">0đ</div>
+</header>
+
+
+<!-- AUTH PAGE -->
+<div id="authPage" class="container">
+
+    <div class="auth box">
+
+        <h1 style="text-align:center">TAN SHOP</h1>
+        <p style="text-align:center;color:#9ca3af">
+            Đăng nhập để mua tài khoản
+        </p>
+
+        <div class="tabs">
+            <button id="loginTab" class="active" onclick="showLogin()">
+                Đăng nhập
+            </button>
+
+            <button id="registerTab" onclick="showRegister()">
+                Đăng ký
+            </button>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="loginForm">
+
+            <input id="loginUser"
+                   placeholder="Tên đăng nhập">
+
+            <br><br>
+
+            <input id="loginPass"
+                   type="password"
+                   placeholder="Mật khẩu">
+
+            <br><br>
+
+            <button class="btn" style="width:100%"
+                    onclick="loginUser()">
+                ĐĂNG NHẬP
+            </button>
+
+            <br><br>
+
+            <button class="btn gray"
+                    style="width:100%"
+                    onclick="showAdminLogin()">
+                ⚙️ ĐĂNG NHẬP ADMIN
+            </button>
+
+            <p id="loginError"
+               style="color:#f87171;text-align:center"></p>
+
+        </div>
+
+
+        <!-- REGISTER -->
+        <div id="registerForm" class="hidden">
+
+            <input id="regUser"
+                   placeholder="Tên đăng nhập">
+
+            <br><br>
+
+            <input id="regPass"
+                   type="password"
+                   placeholder="Mật khẩu">
+
+            <br><br>
+
+            <input id="regPass2"
+                   type="password"
+                   placeholder="Nhập lại mật khẩu">
+
+            <br><br>
+
+            <button class="btn"
+                    style="width:100%"
+                    onclick="registerUser()">
+                TẠO TÀI KHOẢN
+            </button>
+
+            <p id="registerError"
+               style="color:#f87171;text-align:center"></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ADMIN LOGIN -->
+<div id="adminLoginPage" class="container hidden">
+
+    <div class="auth box">
+
+        <h1>⚙️ ADMIN</h1>
+
+        <input id="adminUser"
+               placeholder="Tên admin">
+
+        <br><br>
+
+        <input id="adminPass"
+               type="password"
+               placeholder="Mật khẩu">
+
+        <br><br>
+
+        <button class="btn"
+                style="width:100%"
+                onclick="adminLogin()">
+            ĐĂNG NHẬP ADMIN
+        </button>
+
+        <br><br>
+
+        <button class="btn gray"
+                style="width:100%"
+                onclick="backAuth()">
+            ← Quay lại
+        </button>
+
+        <p id="adminError"
+           style="color:#f87171;text-align:center"></p>
+
+    </div>
+
+</div>
+
+
+<!-- SHOP -->
+<main id="mainPage" class="container">
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+
+        <div class="hero">
+            <h1>🎮 TAN SHOP</h1>
+            <p>
+                Shop tài khoản game Liên Quân & Roblox
+            </p>
+        </div>
+
+        <div class="search">
+            <input id="searchInput"
+                   placeholder="🔎 Tìm acc..."
+                   oninput="renderProducts()">
+        </div>
+
+        <div class="actions" style="margin-bottom:20px">
+            <button class="btn"
+                    onclick="filterGame('all')">
+                Tất cả
+            </button>
+
+            <button class="btn gray"
+                    onclick="filterGame('Liên Quân')">
+                Liên Quân
+            </button>
+
+            <button class="btn gray"
+                    onclick="filterGame('Roblox')">
+                Roblox
+            </button>
+        </div>
+
+        <div id="products" class="grid"></div>
+
+    </section>
+
+
+    <!-- ORDERS -->
+    <section id="orders" class="page">
+
+        <div class="box">
+            <h2>📜 Lịch sử mua</h2>
+
+            <div id="ordersList"></div>
+        </div>
+
+    </section>
+
+
+    <!-- ADMIN -->
+    <section id="admin" class="page">
+
+        <div class="box">
+
+            <h2 class="admin-title">
+                ⚙️ QUẢN TRỊ TAN SHOP
+            </h2>
+
+            <p>
+                Đăng nhập:
+                <b id="adminName"></b>
+            </p>
+
+        </div>
+
+
+        <!-- ADD ACCOUNT -->
+        <div class="box">
+
+            <h2>➕ Thêm tài khoản</h2>
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Tên hiển thị</label>
+                    <input id="accName"
+                           placeholder="Ví dụ: Acc LQ VIP #001">
+                </div>
+
+                <div>
+                    <label>Game</label>
+                    <select id="accGame">
+                        <option>Liên Quân</option>
+                        <option>Roblox</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Tài khoản game</label>
+                    <input id="accUsername"
+                           placeholder="Username">
+                </div>
+
+                <div>
+                    <label>Mật khẩu game</label>
+                    <input id="accPassword"
+                           placeholder="Password">
+                </div>
+
+                <div>
+                    <label>Giá tiền</label>
+                    <input id="accPrice"
+                           type="number"
+                           placeholder="50000">
+                </div>
+
+                <div class="form-full">
+                    <label>Mô tả</label>
+                    <textarea id="accDesc"
+                              placeholder="Mô tả tài khoản..."></textarea>
+                </div>
+
+            </div>
+
+            <br>
+
+            <button class="btn"
+                    onclick="addAccount()">
+                ➕ THÊM ACC
+            </button>
+
+        </div>
+
+
+        <!-- ADMIN PRODUCTS -->
+        <div class="box">
+
+            <h2>🎮 Danh sách tài khoản</h2>
+
+            <div id="adminProducts"></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+/* =========================
+   DATABASE LOCALSTORAGE
+========================= */
+
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "TANSHOP@2026";
+
+let currentUser =
+    localStorage.getItem("tanCurrentUser") || "";
+
+let currentGame = "all";
+
+let accounts =
+    JSON.parse(localStorage.getItem("tanShopAccounts") || "null");
+
+if(!accounts){
+
+    accounts = [
+
+        {
+            id:Date.now()+1,
+            name:"Liên Quân Acc #001",
+            game:"Liên Quân",
+            username:"lq_demo_001",
+            password:"demo123",
+            price:50000,
+            desc:"Acc Liên Quân demo"
+        },
+
+        {
+            id:Date.now()+2,
+            name:"Liên Quân Acc #002",
+            game:"Liên Quân",
+            username:"lq_demo_002",
+            password:"demo456",
+            price:100000,
+            desc:"Acc Liên Quân VIP demo"
+        },
+
+        {
+            id:Date.now()+3,
+            name:"Roblox Acc #001",
+            game:"Roblox",
+            username:"rb_demo_001",
+            password:"roblox123",
+            price:50000,
+            desc:"Acc Roblox demo"
+        },
+
+        {
+            id:Date.now()+4,
+            name:"Roblox Acc #002",
+            game:"Roblox",
+            username:"rb_demo_002",
+            password:"roblox456",
+            price:100000,
+            desc:"Acc Roblox VIP demo"
+        }
+
+    ];
+
+    saveAccounts();
+}
+
+
+/* =========================
+   USERS
+========================= */
+
+function getUsers(){
+
+    return JSON.parse(
+        localStorage.getItem("tanUsers") || "{}"
+    );
+
+}
+
+function saveUsers(users){
+
+    localStorage.setItem(
+        "tanUsers",
+        JSON.stringify(users)
+    );
+
+}
+
+
+/* =========================
+   ACCOUNTS
+========================= */
+
+function saveAccounts(){
+
+    localStorage.setItem(
+        "tanShopAccounts",
+        JSON.stringify(accounts)
+    );
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function showLogin(){
+
+    document.getElementById("loginForm")
+        .classList.remove("hidden");
+
+    document.getElementById("registerForm")
+        .classList.add("hidden");
+
+    document.getElementById("loginTab")
+        .classList.add("active");
+
+    document.getElementById("registerTab")
+        .classList.remove("active");
+
+}
+
+function showRegister(){
+
+    document.getElementById("loginForm")
+        .classList.add("hidden");
+
+    document.getElementById("registerForm")
+        .classList.remove("hidden");
+
+    document.getElementById("loginTab")
+        .classList.remove("active");
+
+    document.getElementById("registerTab")
+        .classList.add("active");
+
+}
+
+
+function registerUser(){
+
+    const username =
+        document.getElementById("regUser")
+        .value.trim();
+
+    const password =
+        document.getElementById("regPass")
+        .value;
+
+    const password2 =
+        document.getElementById("regPass2")
+        .value;
+
+    const error =
+        document.getElementById("registerError");
+
+    if(!username || !password){
+
+        error.textContent =
+            "Vui lòng nhập đầy đủ thông tin.";
+
+        return;
+    }
+
+    if(password !== password2){
+
+        error.textContent =
+            "Mật khẩu nhập lại không đúng.";
+
+        return;
+    }
+
+    if(username.toLowerCase() === ADMIN_USER){
+
+        error.textContent =
+            "Tên tài khoản này không được sử dụng.";
+
+        return;
+    }
+
+    const users = getUsers();
+
+    if(users[username]){
+
+        error.textContent =
+            "Tên đăng nhập đã tồn tại.";
+
+        return;
+    }
+
+    users[username] = {
+        password:password,
+        balance:0,
+        orders:[]
+    };
+
+    saveUsers(users);
+
+    alert("Đăng ký thành công!");
+
+    document.getElementById("loginUser").value =
+        username;
+
+    showLogin();
+
+}
+
+
+function loginUser(){
+
+    const username =
+        document.getElementById("loginUser")
+        .value.trim();
+
+    const password =
+        document.getElementById("loginPass")
+        .value;
+
+    const users = getUsers();
+
+    if(!users[username] ||
+       users[username].password !== password){
+
+        document.getElementById("loginError")
+            .textContent =
+            "Sai tài khoản hoặc mật khẩu.";
+
+        return;
+    }
+
+    currentUser = username;
+
+    localStorage.setItem(
+        "tanCurrentUser",
+        username
+    );
+
+    startShop();
+
+}
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+function showAdminLogin(){
+
+    document.getElementById("authPage")
+        .classList.add("hidden");
+
+    document.getElementById("adminLoginPage")
+        .classList.remove("hidden");
+
+}
+
+function backAuth(){
+
+    document.getElementById("adminLoginPage")
+        .classList.add("hidden");
+
+    document.getElementById("authPage")
+        .classList.remove("hidden");
+
+}
+
+
+function adminLogin(){
+
+    const username =
+        document.getElementById("adminUser")
+        .value.trim();
+
+    const password =
+        document.getElementById("adminPass")
+        .value;
+
+    if(
+        username !== ADMIN_USER ||
+        password !== ADMIN_PASS
+    ){
+
+        document.getElementById("adminError")
+            .textContent =
+            "Sai tài khoản admin.";
+
+        return;
+    }
+
+    localStorage.setItem(
+        "tanAdminLogin",
+        "true"
+    );
+
+    document.getElementById("adminLoginPage")
+        .classList.add("hidden");
+
+    document.getElementById("mainPage")
+        .style.display = "block";
+
+    document.getElementById("adminMenu")
+        .classList.remove("hidden");
+
+    document.getElementById("userMenu")
+        .classList.add("hidden");
+
+    document.getElementById("balanceBox")
+        .textContent = "ADMIN";
+
+    go("admin");
+
+    renderAdmin();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+function startShop(){
+
+    document.getElementById("authPage")
+        .classList.add("hidden");
+
+    document.getElementById("adminLoginPage")
+        .classList.add("hidden");
+
+    document.getElementById("mainPage")
+        .style.display = "block";
+
+    document.getElementById("userMenu")
+        .classList.remove("hidden");
+
+    document.getElementById("adminMenu")
+        .classList.add("hidden");
+
+    updateBalance();
+
+    renderProducts();
+
+    renderOrders();
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function go(page){
+
+    document.querySelectorAll(".page")
+        .forEach(p =>
+            p.classList.remove("active")
+        );
+
+    const target =
+        document.getElementById(page);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    closeMenu();
+
+    if(page === "home")
+        renderProducts();
+
+    if(page === "orders")
+        renderOrders();
+
+    if(page === "admin")
+        renderAdmin();
+
+}
+
+
+function filterGame(game){
+
+    currentGame = game;
+
+    go("home");
+
+    renderProducts();
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+function renderProducts(){
+
+    const box =
+        document.getElementById("products");
+
+    if(!box) return;
+
+    const search =
+        (document.getElementById("searchInput")
+        ?.value || "")
+        .toLowerCase();
+
+    let list = accounts.filter(acc => {
+
+        const gameOK =
+            currentGame === "all" ||
+            acc.game === currentGame;
+
+        const searchOK =
+            acc.name.toLowerCase()
+                .includes(search) ||
+            acc.game.toLowerCase()
+                .includes(search);
+
+        return gameOK && searchOK;
+
+    });
+
+    if(!list.length){
+
+        box.innerHTML =
+            `<div class="empty">
+                Không tìm thấy tài khoản.
+            </div>`;
+
+        return;
+    }
+
+    box.innerHTML =
+        list.map(acc => `
+
+            <div class="card">
+
+                <h3>${escapeHTML(acc.name)}</h3>
+
+                <p>🎮 ${escapeHTML(acc.game)}</p>
+
+                <p>${escapeHTML(acc.desc || "")}</p>
+
+                <div class="price">
+                    ${formatMoney(acc.price)}
+                </div>
+
+                <br>
+
+                <button class="btn"
+                        style="width:100%"
+                        onclick="buyAccount(${acc.id})">
+                    🛒 MUA NGAY
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   BUY
+========================= */
+
+function buyAccount(id){
+
+    const acc =
+        accounts.find(a => a.id === id);
+
+    if(!acc) return;
+
+    const users = getUsers();
+
+    const user =
+        users[currentUser];
+
+    if(!user){
+
+        alert("Vui lòng đăng nhập.");
+
+        return;
+    }
+
+    if(user.balance < acc.price){
+
+        alert(
+            "Không đủ số dư!\n" +
+            "Số dư hiện tại: " +
+            formatMoney(user.balance)
+        );
+
+        return;
+    }
+
+    const ok =
+        confirm(
+            "Bạn có chắc muốn mua " +
+            acc.name +
+            " với giá " +
+            formatMoney(acc.price) +
+            "?"
+        );
+
+    if(!ok) return;
+
+    user.balance -= acc.price;
+
+    if(!user.orders)
+        user.orders = [];
+
+    user.orders.push({
+
+        id:Date.now(),
+
+        productId:acc.id,
+
+        name:acc.name,
+
+        game:acc.game,
+
+        username:acc.username,
+
+        password:acc.password,
+
+        price:acc.price,
+
+        time:new Date().toLocaleString("vi-VN")
+
+    });
+
+    delete accounts[
+        accounts.findIndex(a => a.id === id)
+    ];
+
+    accounts =
+        accounts.filter(Boolean);
+
+    saveAccounts();
+    saveUsers(users);
+
+    alert(
+        "🎉 Mua thành công!\n\n" +
+        "Tài khoản: " +
+        acc.username +
+        "\nMật khẩu: " +
+        acc.password
+    );
+
+    updateBalance();
+    renderProducts();
+    renderOrders();
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+function renderOrders(){
+
+    const box =
+        document.getElementById("ordersList");
+
+    if(!box || !currentUser) return;
+
+    const users = getUsers();
+
+    const user =
+        users[currentUser];
+
+    if(!user || !user.orders || !user.orders.length){
+
+        box.innerHTML =
+            `<div class="empty">
+                Bạn chưa mua tài khoản nào.
+            </div>`;
+
+        return;
+    }
+
+    box.innerHTML =
+        user.orders
+        .slice()
+        .reverse()
+        .map(order => `
+
+            <div class="card"
+                 style="margin-bottom:12px">
+
+                <h3>
+                    ${escapeHTML(order.name)}
+                </h3>
+
+                <p>
+                    🎮 ${escapeHTML(order.game)}
+                </p>
+
+                <p>
+                    💰 ${formatMoney(order.price)}
+                </p>
+
+                <p>
+                    🕒 ${escapeHTML(order.time)}
+                </p>
+
+                <div class="notice">
+
+                    <b>Tài khoản:</b>
+                    ${escapeHTML(order.username)}
+
+                    <br><br>
+
+                    <b>Mật khẩu:</b>
+                    ${escapeHTML(order.password)}
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   ADMIN
+========================= */
+
+function addAccount(){
+
+    const name =
+        document.getElementById("accName")
+        .value.trim();
+
+    const game =
+        document.getElementById("accGame")
+        .value;
+
+    const username =
+        document.getElementById("accUsername")
+        .value.trim();
+
+    const password =
+        document.getElementById("accPassword")
+        .value;
+
+    const price =
+        Number(
+            document.getElementById("accPrice")
+            .value
+        );
+
+    const desc =
+        document.getElementById("accDesc")
+        .value.trim();
+
+    if(
+        !name ||
+        !username ||
+        !password ||
+        !price
+    ){
+
+        alert("Vui lòng nhập đầy đủ thông tin.");
+
+        return;
+    }
+
+    accounts.push({
+
+        id:Date.now(),
+
+        name:name,
+
+        game:game,
+
+        username:username,
+
+        password:password,
+
+        price:price,
+
+        desc:desc
+
+    });
+
+    saveAccounts();
+
+    document.getElementById("accName").value="";
+    document.getElementById("accUsername").value="";
+    document.getElementById("accPassword").value="";
+    document.getElementById("accPrice").value="";
+    document.getElementById("accDesc").value="";
+
+    renderAdmin();
+    renderProducts();
+
+    alert("Đã thêm tài khoản!");
+
+}
+
+
+function renderAdmin(){
+
+    const box =
+        document.getElementById("adminProducts");
+
+    if(!box) return;
+
+    document.getElementById("adminName")
+        .textContent = ADMIN_USER;
+
+    if(!accounts.length){
+
+        box.innerHTML =
+            `<div class="empty">
+                Chưa có tài khoản.
+            </div>`;
+
+        return;
+    }
+
+    box.innerHTML =
+        accounts.map(acc => `
+
+            <div class="card"
+                 style="margin-bottom:12px">
+
+                <h3>
+                    ${escapeHTML(acc.name)}
+                </h3>
+
+                <p>
+                    🎮 ${escapeHTML(acc.game)}
+                </p>
+
+                <p>
+                    👤 ${escapeHTML(acc.username)}
+                </p>
+
+                <p>
+                    💰 ${formatMoney(acc.price)}
+                </p>
+
+                <p>
+                    ${escapeHTML(acc.desc || "")}
+                </p>
+
+                <div class="actions">
+
+                    <button class="btn"
+                            onclick="editAccount(${acc.id})">
+                        ✏️ Sửa
+                    </button>
+
+                    <button class="btn red"
+                            onclick="deleteAccount(${acc.id})">
+                        🗑️ Xóa
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function editAccount(id){
+
+    const acc =
+        accounts.find(a => a.id === id);
+
+    if(!acc) return;
+
+    const name =
+        prompt("Tên acc:", acc.name);
+
+    if(name === null) return;
+
+    const game =
+        prompt(
+            "Game (Liên Quân hoặc Roblox):",
+            acc.game
+        );
+
+    if(game === null) return;
+
+    const username =
+        prompt(
+            "Tài khoản game:",
+            acc.username
+        );
+
+    if(username === null) return;
+
+    const password =
+        prompt(
+            "Mật khẩu game:",
+            acc.password
+        );
+
+    if(password === null) return;
+
+    const price =
+        Number(
+            prompt(
+                "Giá:",
+                acc.price
+            )
+        );
+
+    if(!price) return;
+
+    const desc =
+        prompt(
+            "Mô tả:",
+            acc.desc || ""
+        );
+
+    acc.name = name;
+    acc.game = game;
+    acc.username = username;
+    acc.password = password;
+    acc.price = price;
+    acc.desc = desc || "";
+
+    saveAccounts();
+
+    renderAdmin();
+    renderProducts();
+
+    alert("Đã cập nhật acc!");
+
+}
+
+
+function deleteAccount(id){
+
+    const acc =
+        accounts.find(a => a.id === id);
+
+    if(!acc) return;
+
+    if(!confirm(
+        "Xóa " + acc.name + "?"
+    )) return;
+
+    accounts =
+        accounts.filter(
+            a => a.id !== id
+        );
+
+    saveAccounts();
+
+    renderAdmin();
+    renderProducts();
+
+}
+
+
+/* =========================
+   BALANCE
+========================= */
+
+function updateBalance(){
+
+    if(!currentUser) return;
+
+    const users = getUsers();
+
+    const user =
+        users[currentUser];
+
+    if(!user) return;
+
+    document.getElementById("balanceBox")
+        .textContent =
+        formatMoney(user.balance);
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+    localStorage.removeItem("tanCurrentUser");
+    localStorage.removeItem("tanAdminLogin");
+
+    currentUser = "";
+
+    document.getElementById("mainPage")
+        .style.display="none";
+
+    document.getElementById("adminLoginPage")
+        .classList.add("hidden");
+
+    document.getElementById("authPage")
+        .classList.remove("hidden");
+
+    document.getElementById("userMenu")
+        .classList.remove("hidden");
+
+    document.getElementById("adminMenu")
+        .classList.add("hidden");
+
+    closeMenu();
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+function openMenu(){
+
+    document.getElementById("side")
+        .classList.add("open");
+
+    document.getElementById("overlay")
+        .classList.add("show");
+
+}
+
+function closeMenu(){
+
+    document.getElementById("side")
+        .classList.remove("open");
+
+    document.getElementById("overlay")
+        .classList.remove("show");
+
+}
+
+
+/* =========================
+   FORMAT
+========================= */
+
+function formatMoney(number){
+
+    return Number(number || 0)
+        .toLocaleString("vi-VN") + "đ";
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   AUTO LOGIN
+========================= */
+
+if(
+    localStorage.getItem("tanAdminLogin") === "true"
+){
+
+    document.getElementById("authPage")
+        .classList.add("hidden");
+
+    document.getElementById("mainPage")
+        .style.display="block";
+
+    document.getElementById("userMenu")
+        .classList.add("hidden");
+
+    document.getElementById("adminMenu")
+        .classList.remove("hidden");
+
+    document.getElementById("balanceBox")
+        .textContent="ADMIN";
+
+    go("admin");
+
+}else if(currentUser){
+
+    startShop();
+
+}else{
+
+    document.getElementById("mainPage")
+        .style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>
+```
